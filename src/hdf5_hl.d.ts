@@ -11,18 +11,18 @@ export declare const ACCESS_MODES: {
     readonly Sw: "H5F_ACC_SWMR_WRITE";
     readonly Sr: "H5F_ACC_SWMR_READ";
 };
-declare type ACCESS_MODESTRING = keyof typeof ACCESS_MODES;
-export declare type OutputData = TypedArray | string | number | bigint | boolean | OutputData[];
-export declare type JSONCompatibleOutputData = string | number | boolean | JSONCompatibleOutputData[];
-export declare type Dtype = string | {
+type ACCESS_MODESTRING = keyof typeof ACCESS_MODES;
+export type OutputData = TypedArray | string | number | bigint | boolean | OutputData[];
+export type JSONCompatibleOutputData = string | number | boolean | JSONCompatibleOutputData[];
+export type Dtype = string | {
     compound_type: CompoundTypeMetadata;
 } | {
     array_type: Metadata;
 };
 export type { Metadata };
 export type { Filter };
-declare type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | BigInt64Array | BigUint64Array | Float32Array | Float64Array;
-export declare type GuessableDataTypes = TypedArray | number | number[] | string | string[];
+type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | BigInt64Array | BigUint64Array | Float32Array | Float64Array;
+export type GuessableDataTypes = TypedArray | number | number[] | string | string[];
 declare enum OBJECT_TYPE {
     DATASET = "Dataset",
     GROUP = "Group",
