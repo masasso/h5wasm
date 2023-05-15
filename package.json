@@ -35,9 +35,6 @@
     "esbuild": "^0.15.16",
     "typescript": "^4.5.4"
   },
-  "dependencies": {
-    "h5wasm": "github:masasso/h5wasmGeneral"
-  },
   "bugs": {
     "url": "https://github.com/usnistgov/h5wasm/issues"
   },
