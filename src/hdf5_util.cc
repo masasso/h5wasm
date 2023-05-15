@@ -45,7 +45,7 @@ val get_child_names(hid_t loc_id, const std::string& group_name_string, bool rec
     unsigned crt_order_flags;
     size_t namesize;
     herr_t status;
-    const char *group_name = group_name_string.c_str();
+    const char *group_name = group_name_string.data();
 
     hid_t grp = H5Gopen2(loc_id, group_name, H5P_DEFAULT);
     if (grp < 0)
@@ -86,7 +86,7 @@ val get_child_types(hid_t loc_id, const std::string& group_name_string)
     herr_t status;
     H5O_info_t oinfo;
     //const char * group_name = &group_name_string[0];
-    const char *group_name = group_name_string.c_str();
+    const char *group_name = group_name_string.data();
 
     hid_t grp = H5Gopen2(loc_id, group_name, H5P_DEFAULT);
     if (grp < 0)
@@ -123,7 +123,7 @@ int get_type(hid_t loc_id, const std::string& obj_name_string)
     // H5O_info2_t oinfo;
     H5G_stat_t ginfo;
     int obj_type = -1; // default: if not name exists
-    const char *obj_name = obj_name_string.c_str();
+    const char *obj_name = obj_name_string.data();
     htri_t exists = H5LTpath_valid(loc_id, obj_name, true);
     if (exists) {
         herr_t status = H5Gget_objinfo(loc_id, obj_name, true, &ginfo);
@@ -144,7 +144,7 @@ int get_type(hid_t loc_id, const std::string& obj_name_string)
 val get_symbolic_link(hid_t loc_id, const std::string& obj_name_string)
 {
     H5L_info2_t linfo;
-    const char *obj_name = obj_name_string.c_str();
+    const char *obj_name = obj_name_string.data();
     htri_t exists = H5LTpath_valid(loc_id, obj_name, false);
     herr_t status = H5Lget_info2(loc_id, obj_name, &linfo, H5P_DEFAULT);
     if (exists && linfo.type == H5L_TYPE_SOFT) {
@@ -163,7 +163,7 @@ val get_symbolic_link(hid_t loc_id, const std::string& obj_name_string)
 val get_external_link(hid_t loc_id, const std::string& obj_name_string)
 {
     H5L_info2_t linfo;
-    const char *obj_name = obj_name_string.c_str();
+    const char *obj_name = obj_name_string.data();
     htri_t exists = H5LTpath_valid(loc_id, obj_name, false);
     herr_t status = H5Lget_info2(loc_id, obj_name, &linfo, H5P_DEFAULT);
     val output = val::object();
@@ -200,7 +200,7 @@ val get_attribute_names(hid_t loc_id, const std::string& obj_name_string)
     herr_t status;
     //H5A_info_t * ainfo;
     //H5T_cset_t cset;
-    const char *obj_name = obj_name_string.c_str();
+    const char *obj_name = obj_name_string.data();
 
     hid_t obj_id = H5Oopen(loc_id, obj_name, H5P_DEFAULT);
     if (obj_id < 0)
@@ -378,8 +378,8 @@ val get_attribute_metadata(hid_t loc_id, const std::string& group_name_string, c
     hid_t dspace;
     hid_t dtype;
     herr_t status;
-    const char *group_name = group_name_string.c_str();
-    const char *attribute_name = attribute_name_string.c_str();
+    const char *group_name = group_name_string.data();
+    const char *attribute_name = attribute_name_string.data();
 
     htri_t exists = H5Aexists_by_name(loc_id, group_name, attribute_name, H5P_DEFAULT);
     if (exists < 1)
@@ -402,7 +402,7 @@ int refresh_dataset(hid_t loc_id, const std::string& dataset_name_string)
 {
     hid_t ds_id;
     herr_t status;
-    const char *dataset_name = dataset_name_string.c_str();
+    const char *dataset_name = dataset_name_string.data();
 
     ds_id = H5Dopen2(loc_id, dataset_name, H5P_DEFAULT);
     if (ds_id < 0)
@@ -421,7 +421,7 @@ val get_dataset_metadata(hid_t loc_id, const std::string& dataset_name_string)
     hid_t dtype;
     hid_t dcpl;
     herr_t status;
-    const char *dataset_name = dataset_name_string.c_str();
+    const char *dataset_name = dataset_name_string.data();
 
     ds_id = H5Dopen2(loc_id, dataset_name, H5P_DEFAULT);
     if (ds_id < 0)
@@ -446,7 +446,7 @@ val get_dataset_filters(hid_t loc_id, const std::string& dataset_name_string)
     hid_t ds_id;
     hid_t plist_id;
     herr_t status;
-    const char *dataset_name = dataset_name_string.c_str();
+    const char *dataset_name = dataset_name_string.data();
 
     ds_id = H5Dopen2(loc_id, dataset_name, H5P_DEFAULT);
     if (ds_id < 0)
@@ -486,7 +486,7 @@ int read_write_dataset_data(hid_t loc_id, const std::string& dataset_name_string
     hid_t memtype;
     hid_t memspace;
     herr_t status;
-    const char *dataset_name = dataset_name_string.c_str();
+    const char *dataset_name = dataset_name_string.data();
     void *rwdata = (void *)rwdata_uint64;
 
     ds_id = H5Dopen2(loc_id, dataset_name, H5P_DEFAULT);
@@ -552,8 +552,8 @@ int reclaim_vlen_memory(hid_t loc_id, const std::string& object_name_string, con
     hid_t dspace;
     hid_t dtype;
     herr_t status;
-    const char *object_name = object_name_string.c_str();
-    const char *attribute_name = attribute_name_string.c_str();
+    const char *object_name = object_name_string.data();
+    const char *attribute_name = attribute_name_string.data();
     void *rdata = (void *)rdata_uint64;
 
     if (attribute_name_string == "") {
@@ -613,7 +613,7 @@ int get_attribute_data(hid_t loc_id, const std::string& group_name_string, const
 
 int create_group(hid_t loc_id, std::string grp_name_string)
 {
-    hid_t grp_id = H5Gcreate2(loc_id, grp_name_string.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+    hid_t grp_id = H5Gcreate2(loc_id, grp_name_string.data(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
     herr_t status = H5Gclose(grp_id);
     return (int)status;
 }
@@ -692,7 +692,7 @@ int create_attribute(hid_t loc_id, std::string obj_name_string, std::string attr
     // data is pointer to raw bytes
     void *wdata = (void *)wdata_uint64;
 
-    const char *attr_name = attr_name_string.c_str();
+    const char *attr_name = attr_name_string.data();
 
     // std::vector<hsize_t> dims_vec = vecFromJSArray<hsize_t>(dims_in);
     // int ndims = dims_vec.size();
@@ -734,7 +734,7 @@ int create_attribute(hid_t loc_id, std::string obj_name_string, std::string attr
     /*
     * Create the attribute and write the data to it.
     */
-    obj_id = H5Oopen(loc_id, obj_name_string.c_str(), H5P_DEFAULT);
+    obj_id = H5Oopen(loc_id, obj_name_string.data(), H5P_DEFAULT);
     attr = H5Acreate(obj_id, attr_name, filetype, space, H5P_DEFAULT,
                      H5P_DEFAULT);
     status = H5Awrite(attr, filetype, wdata);
@@ -755,7 +755,7 @@ int create_attribute(hid_t loc_id, std::string obj_name_string, std::string attr
 
 int delete_attribute(hid_t loc_id, const std::string obj_name_string, const std::string attr_name_string)
 {
-    herr_t status = H5Adelete_by_name(loc_id, obj_name_string.c_str(), attr_name_string.c_str(), H5P_DEFAULT);
+    herr_t status = H5Adelete_by_name(loc_id, obj_name_string.data(), attr_name_string.data(), H5P_DEFAULT);
     return (int) status;
 }
 
@@ -770,14 +770,14 @@ int create_vlen_str_attribute(hid_t loc_id, std::string obj_name_string, std::st
     // // alternative initialization of wdata, with "new const char *":
     // const char ** wdata = new const char * [data_string_vec.size()];
     // for (hsize_t i=0; i<data_string_vec.size(); i++) {
-    //     wdata.push_back(data_string_vec.at(i).c_str());
-    //     wdata[i] = data_string_vec.at(i).c_str();
+    //     wdata.push_back(data_string_vec.at(i).data());
+    //     wdata[i] = data_string_vec.at(i).data();
     // }
     // // followed by "delete [] (wdata);" at the end of the block
 
     for (hsize_t i = 0; i < data_string_vec.size(); i++)
     {
-        data_char_vec.push_back(data_string_vec.at(i).c_str());
+        data_char_vec.push_back(data_string_vec.at(i).data());
     }
 
     // pass the pointer as an int...
@@ -791,7 +791,7 @@ int create_dataset(hid_t loc_id, std::string dset_name_string, uint64_t wdata_ui
     herr_t status;
     // data is pointer to raw bytes
     void *wdata = (void *)wdata_uint64;
-    const char *dset_name = dset_name_string.c_str();
+    const char *dset_name = dset_name_string.data();
 
     status = setup_dataset(dims_in, maxdims_in, chunks_in, dtype, dsize, is_signed, is_vlstr, &filetype, &space, &dcpl);
     dset = H5Dcreate2(loc_id, dset_name, filetype, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
@@ -813,7 +813,7 @@ int create_vlen_str_dataset(hid_t loc_id, std::string dset_name_string, val data
     data_char_vec.reserve(data_string_vec.size());
     for (hsize_t i = 0; i < data_string_vec.size(); i++)
     {
-        data_char_vec.push_back(data_string_vec.at(i).c_str());
+        data_char_vec.push_back(data_string_vec.at(i).data());
     }
     // pass the pointer as an int...
     wdata_uint64 = (uint64_t)data_char_vec.data();
@@ -822,7 +822,7 @@ int create_vlen_str_dataset(hid_t loc_id, std::string dset_name_string, val data
 
 int resize_dataset(hid_t loc_id, const std::string dset_name_string, val new_size_in)
 {
-    const char *dset_name = dset_name_string.c_str();
+    const char *dset_name = dset_name_string.data();
     hid_t dset_id = H5Dopen2(loc_id, dset_name, H5P_DEFAULT);
 
     std::vector<hsize_t> new_size_vec = vecFromJSArray<hsize_t>(new_size_in);
@@ -834,8 +834,8 @@ int resize_dataset(hid_t loc_id, const std::string dset_name_string, val new_siz
 }
 
 int create_soft_link(hid_t loc_id, std::string link_target_string, std::string link_name_string) {
-    const char *link_target = link_target_string.c_str();
-    const char *link_name = link_name_string.c_str();
+    const char *link_target = link_target_string.data();
+    const char *link_name = link_name_string.data();
 
     return H5Lcreate_soft(link_target, loc_id, link_name, H5P_DEFAULT, H5P_DEFAULT);
 }
@@ -843,16 +843,16 @@ int create_soft_link(hid_t loc_id, std::string link_target_string, std::string l
 int create_hard_link(hid_t loc_id, std::string link_target_string, std::string link_name_string) {
     // only supports linking target with absolute paths (relative to root)
     // will return non-zero value if target does not already exist.
-    const char *link_target = link_target_string.c_str();
-    const char *link_name = link_name_string.c_str();
+    const char *link_target = link_target_string.data();
+    const char *link_name = link_name_string.data();
 
     return H5Lcreate_hard(loc_id, link_target, loc_id, link_name, H5P_DEFAULT, H5P_DEFAULT);
 }
 
 int create_external_link(hid_t loc_id, std::string file_name_string, std::string link_target_string, std::string link_name_string) {
-    const char *file_name = file_name_string.c_str();
-    const char *link_target = link_target_string.c_str();
-    const char *link_name = link_name_string.c_str();
+    const char *file_name = file_name_string.data();
+    const char *link_target = link_target_string.data();
+    const char *link_name = link_name_string.data();
 
     return H5Lcreate_external(file_name, link_target, loc_id, link_name, H5P_DEFAULT, H5P_DEFAULT);
 }
