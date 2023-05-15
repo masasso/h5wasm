@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/usnistgov/h5wasm.git"
+    "url": "git+https://github.com/usnistgov/h5wasm.git"
   },
   "keywords": [
     "hdf5",
@@ -34,5 +34,15 @@
   "devDependencies": {
     "esbuild": "^0.15.16",
     "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "h5wasm": "github:masasso/h5wasmGeneral"
+  },
+  "bugs": {
+    "url": "https://github.com/usnistgov/h5wasm/issues"
+  },
+  "homepage": "https://github.com/usnistgov/h5wasm#readme",
+  "directories": {
+    "test": "test"
   }
 }
